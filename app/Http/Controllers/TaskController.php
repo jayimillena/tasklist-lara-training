@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,9 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return view('index');
+        return view('index', [
+            'tasks' => Task::all()
+        ]);
     }
 
     /**
@@ -20,15 +23,19 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return view('create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $task = Task::create($validated);
+
+        return redirect()->route('home.index')
+            ->with('success', 'Task has been creaetd succesfully!');
     }
 
     /**
@@ -36,7 +43,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
+
     }
 
     /**
