@@ -35,7 +35,7 @@ class TaskController extends Controller
         $task = Task::create($validated);
 
         return redirect()->route('home.index')
-            ->with('success', 'Task has been creaetd succesfully!');
+            ->with('success', 'Task has been created succesfully!');
     }
 
     /**
@@ -49,17 +49,23 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Task $task)
+    public function edit(string $id)
     {
-        //
+        return view('edit', ['task' => Task::find($id)]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(string $id, TaskRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $task = Task::find($id);
+        $task->fill($validated);
+        $task->save();
+
+        return redirect()->route('home.index')
+            ->with('success', 'Task has been updated succesfully!');
     }
 
     /**
